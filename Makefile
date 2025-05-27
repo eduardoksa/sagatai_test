@@ -6,7 +6,7 @@ build:
 up:
 	docker-compose up -d
 
-start: build up
+start: bundle-docker build up
 	@echo "Sistema iniciado em background. Acesse http://localhost:3000"
 
 down:
@@ -19,3 +19,6 @@ logs:
 
 shell:
 	docker-compose exec web bash
+
+bundle-docker:
+	docker run --rm -v "$(shell pwd)":/app -w /app ruby:3.2.8 bash -c "apt-get update && apt-get install -y build-essential git libpq-dev pkg-config libyaml-dev && gem install bundler && bundle config set frozen false && bundle install"
