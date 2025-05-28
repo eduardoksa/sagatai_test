@@ -3,7 +3,7 @@
 ARG RUBY_VERSION=3.2.8
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-WORKDIR /rails
+WORKDIR /sagatai_test
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
@@ -26,19 +26,17 @@ RUN bundle install && \
 
 COPY . .
 
-
-
 FROM base
 
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
+COPY --from=build /sagatai_test /sagatai_test
 
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+ENTRYPOINT ["/sagatai_test/bin/docker-entrypoint"]
 
 EXPOSE 3000
 CMD ["./bin/rails", "server"]

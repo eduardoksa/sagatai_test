@@ -1,13 +1,27 @@
-Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+require 'sidekiq/web'
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+Rails.application.routes.draw do
+  if Rails.env.development?
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Removido root/front-end. Adicione suas rotas de API aqui.
+  namespace :api do
+    namespace :v1 do
+      post 'auth/login', to: 'auth#login'
+      post 'conta_bancaria', to: 'contas_bancarias#create'
+      get 'conta/saldo', to: 'contas_bancarias#saldo'
+      post 'transferencias', to: 'transacoes#create'
+      get 'extrato', to: 'transacoes#extrato'
+      post 'transferencias/agendada', to: 'transacoes#agendar'
+
+      resources :users, only: [:create] do
+        get :me, on: :collection
+      end
+    end
+  end
 end
