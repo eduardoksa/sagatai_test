@@ -36,7 +36,7 @@ RSpec.describe ContaBancaria, type: :model do
 
   it 'allows same numero_conta for different users' do
     described_class.create!(user: user, numero_conta: '999999', agencia: '0001', saldo: 500)
-    other_user = User.create!(nome: 'Outro', email: "outro_#{SecureRandom.hex(4)}@example.com", cpf: (rand(10**10..10**11-1)).to_s, password: 'senha123', password_confirmation: 'senha123')
+    other_user = User.create!(nome: 'Outro', email: "outro_#{SecureRandom.hex(4)}@example.com", cpf: CPF.generate(true), password: 'senha123', password_confirmation: 'senha123')
     conta = described_class.new(user: other_user, numero_conta: '999999', agencia: '0001', saldo: 100)
     expect(conta).to be_valid
   end

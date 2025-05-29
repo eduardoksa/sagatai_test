@@ -14,7 +14,7 @@ RSpec.describe 'ContasBancarias API', type: :request do
 
   describe 'POST /api/v1/contas_bancarias' do
     it 'cria uma conta bancária válida' do
-      post '/api/v1/conta_bancaria',
+      post '/api/v1/contas_bancarias',
         params: {
           conta_bancaria: {
             numero_conta: '123456',
@@ -29,7 +29,7 @@ RSpec.describe 'ContasBancarias API', type: :request do
     end
 
     it 'retorna erro se dados forem inválidos' do
-      post '/api/v1/conta_bancaria',
+      post '/api/v1/contas_bancarias',
         params: {
           conta_bancaria: {
             numero_conta: '',

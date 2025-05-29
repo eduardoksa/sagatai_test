@@ -6,7 +6,7 @@ RSpec.describe 'Users API', type: :request do
       {
         nome: 'Fulano',
         email: "user_#{SecureRandom.hex(4)}@example.com",
-        cpf: (rand(10**10..10**11-1)).to_s,
+        cpf: CPF.generate(true),
         password: 'senha123',
         password_confirmation: 'senha123'
       }

@@ -6,6 +6,7 @@ gem "puma", ">= 5.0"
 gem 'jwt'
 gem 'bcrypt', '~> 3.1.7'
 gem 'sidekiq'
+gem 'cpf_cnpj'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
