@@ -49,6 +49,8 @@ class Api::V1::TransacoesController < ApplicationController
         }.to_json,
         ip: request.remote_ip
       )
+      origem.reload
+      destino.reload
       render json: { message: 'Transferência realizada com sucesso!', transacao: transacao }, status: :created
     end
   rescue => e
@@ -68,7 +70,6 @@ class Api::V1::TransacoesController < ApplicationController
     elsif params[:tipo] == 'recebidas'
       transacoes = transacoes.where(conta_destino_id: conta.id)
     end
-    render json: transacoes.order(data_hora: :desc)
 
     page = params[:page].to_i > 0 ? params[:page].to_i : 1
     per_page = params[:per_page].to_i > 0 ? params[:per_page].to_i : 10

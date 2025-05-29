@@ -4,17 +4,16 @@ class Api::V1::ContasBancariasController < ApplicationController
   def create
     conta = ContaBancaria.new(conta_params.merge(user: current_user))
     if conta.save
+      Auditoria.create!(
+        user: current_user,
+        acao: 'criar_conta_bancaria',
+        detalhes: { conta_id: conta.id, numero_conta: conta.numero_conta, agencia: conta.agencia }.to_json,
+        ip: request.remote_ip
+      )
       render json: { message: 'Conta bancária criada com sucesso!', conta: conta }, status: :created
     else
       render json: { errors: conta.errors.full_messages }, status: :unprocessable_entity
     end
-
-    Auditoria.create!(
-      user: current_user,
-      acao: 'criar_conta_bancaria',
-      detalhes: { conta_id: conta.id, numero_conta: conta.numero_conta, agencia: conta.agencia }.to_json,
-      ip: request.remote_ip
-    )
   end
 
   def saldo
@@ -29,6 +28,6 @@ class Api::V1::ContasBancariasController < ApplicationController
   private
 
   def conta_params
-    params.require(:conta_bancaria).permit(:numero_conta, :agencia)
+    params.require(:conta_bancaria).permit(:numero_conta, :agencia, :saldo)
   end
 end

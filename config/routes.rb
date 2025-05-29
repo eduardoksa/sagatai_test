@@ -18,10 +18,6 @@ Rails.application.routes.draw do
       post 'transferencias', to: 'transacoes#create'
       get 'extrato', to: 'transacoes#extrato'
       post 'transferencias/agendada', to: 'transacoes#agendar'
-
-      resources :users, only: [:create] do
-        get :me, on: :collection
-      end
     end
   end
 end

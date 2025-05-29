@@ -20,8 +20,9 @@ RSpec.describe 'ContasBancarias API', type: :request do
             numero_conta: '123456',
             agencia: '0001'
           }
-        }.to_json,
-        headers: headers
+        },
+        headers: headers,
+        as: :json
 
       expect(response).to have_http_status(:created)
       expect(JSON.parse(response.body)['message']).to eq('Conta bancária criada com sucesso!')

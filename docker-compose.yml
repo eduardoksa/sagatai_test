@@ -6,6 +6,8 @@ services:
     user: "1000:1000"
     volumes:
       - .:/sagatai_test
+    depends_on:
+      - redis
   db:
     image: postgres:15-alpine
     volumes:
