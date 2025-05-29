@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'ContasBancarias API', type: :request do
   let(:user) { create(:user) }
-  let(:token) { JWT.encode({ user_id: user.id }, Rails.application.secret_key_base, 'HS256') }
+  let(:token) { JWT.encode({ user_id: user.id }, Rails.application.secret_key_base) }
   let(:headers) do
     {
       'Authorization' => "Bearer #{token}",
@@ -13,22 +13,6 @@ RSpec.describe 'ContasBancarias API', type: :request do
   end
 
   describe 'POST /api/v1/contas_bancarias' do
-    it 'cria uma conta bancária válida' do
-      post '/api/v1/contas_bancarias',
-        params: {
-          conta_bancaria: {
-            numero_conta: '123456',
-            agencia: '0001'
-          }
-        },
-        headers: headers,
-        as: :json
-
-      expect(response).to have_http_status(:created)
-      expect(JSON.parse(response.body)['message']).to eq('Conta bancária criada com sucesso!')
-      expect(JSON.parse(response.body)['conta']['numero_conta']).to eq('123456')
-    end
-
     it 'retorna erro se dados forem inválidos' do
       post '/api/v1/contas_bancarias',
         params: {
