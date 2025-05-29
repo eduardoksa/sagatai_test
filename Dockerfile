@@ -34,6 +34,8 @@ COPY --from=build /sagatai_test /sagatai_test
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
+
+RUN chown -R 1000:1000 /usr/local/bundle
 USER 1000:1000
 
 ENTRYPOINT ["/sagatai_test/bin/docker-entrypoint"]

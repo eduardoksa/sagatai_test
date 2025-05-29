@@ -22,3 +22,6 @@ shell:
 
 bundle-docker:
 	docker run --rm -v "$(shell pwd)":/app -w /app ruby:3.2.8 bash -c "apt-get update && apt-get install -y build-essential git libpq-dev pkg-config libyaml-dev && gem install bundler && bundle config set frozen false && bundle install"
+
+test:
+	docker-compose run --rm web bundle exec rspec

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'auth/login', to: 'auth#login'
       post 'conta_bancaria', to: 'contas_bancarias#create'
-      get 'conta/saldo', to: 'contas_bancarias#saldo'
+      get 'contas_bancarias/saldo', to: 'contas_bancarias#saldo'
       post 'transferencias', to: 'transacoes#create'
       get 'extrato', to: 'transacoes#extrato'
       post 'transferencias/agendada', to: 'transacoes#agendar'
